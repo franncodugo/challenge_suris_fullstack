@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Reservation_Suris.Domain\Reservation_Suris.Domain.csproj" />
+    <ProjectReference Include="..\Reservation_Suris.Infrastructure\Reservation_Suris.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

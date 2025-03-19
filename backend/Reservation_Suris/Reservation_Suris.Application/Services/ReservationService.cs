@@ -19,7 +19,26 @@ public class ReservationService : IReservationService
     }
 
     public async Task<bool> CreateReservationAsync(ReservationDto reservationDto)
-    {
+    { 
+        // Validacion reservas duplicadas para un servicio mismo día y horario.
+        var isDuplicateRes = await _context.Reservations
+            .AnyAsync(
+                r => r.ServiceId == reservationDto.ServiceId
+                && r.Date == reservationDto.Date
+                && r.Time == reservationDto.Time);
+
+        if (isDuplicateRes)
+            throw new InvalidOperationException("There is already a reservation for this service on this date and time.");
+
+        // Validación reservas para un cliente en un mismo día.
+        var hasMultipleRes = await _context.Reservations
+            .AnyAsync(
+                r => r.ClientId == reservationDto.ClientId
+                && r.Date == reservationDto.Date);
+
+        if (hasMultipleRes)
+            throw new InvalidOperationException("The client already has a reservation for this date.");
+
         var reservation = _mapper.Map<Reservation>(reservationDto);
         _context.Reservations.Add(reservation);
         await _context.SaveChangesAsync();

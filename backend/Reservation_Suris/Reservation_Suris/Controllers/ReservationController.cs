@@ -26,14 +26,29 @@ public sealed class ReservationController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateReservation([FromBody] ReservationDto reservationDto)
     {
-        if (reservationDto is null)
-            return BadRequest("Invalid reservation data.");
+        try
+        {
+            if (reservationDto is null)
+                return BadRequest("Invalid reservation data.");
 
-        var result = await _reservationService.CreateReservationAsync(reservationDto);
+            var result = await _reservationService.CreateReservationAsync(reservationDto);
 
-        if (!result)
-            return BadRequest("Failed to create reservation.");
+            if (!result)
+                return BadRequest("Failed to create reservation.");
 
-        return Ok("Reservation created successfully.");
+            return Ok("Reservation created successfully.");
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (FormatException)
+        {
+            return BadRequest("Invalid time format. Expected format is HH:mm:ss.");
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

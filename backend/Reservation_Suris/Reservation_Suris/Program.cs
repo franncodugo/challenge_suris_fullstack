@@ -1,3 +1,4 @@
+using Reservation_Suris.Application;
 using Reservation_Suris.Domain.Models;
 using Reservation_Suris.Infrastructure.Persistence;
 
@@ -5,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Registrar capa de Infra mediante método estático (EF Core InMemory).
 builder.Services.AddPersistence();
+// Registrar capa de App mediante método estático.
+builder.Services.AddApplication();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

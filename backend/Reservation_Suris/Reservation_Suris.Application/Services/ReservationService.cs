@@ -1,17 +1,34 @@
-﻿using Reservation_Suris.Application.DTOs;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Reservation_Suris.Application.DTOs;
 using Reservation_Suris.Application.Interfaces;
+using Reservation_Suris.Domain.Models;
+using Reservation_Suris.Infrastructure.Persistence;
 
 namespace Reservation_Suris.Application.Services;
 
 public class ReservationService : IReservationService
 {
-    public Task<bool> CreateReservationAsync(ReservationDto reservationDto)
+    private readonly AppDbContext _context;
+    private readonly IMapper _mapper;
+
+    public ReservationService(AppDbContext context, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _mapper = mapper;
     }
 
-    public Task<IEnumerable<ReservationDto>> GetAllReservationsAsync()
+    public async Task<bool> CreateReservationAsync(ReservationDto reservationDto)
     {
-        throw new NotImplementedException();
+        var reservation = _mapper.Map<Reservation>(reservationDto);
+        _context.Reservations.Add(reservation);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<IEnumerable<ReservationDto>> GetAllReservationsAsync()
+    {
+        var reservations = await _context.Reservations.ToListAsync();
+        return _mapper.Map<IEnumerable<ReservationDto>>(reservations);
     }
 }

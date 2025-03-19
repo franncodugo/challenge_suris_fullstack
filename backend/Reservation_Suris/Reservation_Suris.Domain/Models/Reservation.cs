@@ -8,12 +8,5 @@ public class Reservation
     public int ClientId { get; set; }
     public Client Client { get; set; }
     public DateTime Date { get; set; }
-    public ReservationStatus Status { get; set; }
-}
-
-public enum ReservationStatus
-{
-    Pending,
-    Confirmed,
-    Cancelled
+    public TimeSpan Time { get; set; }
 }

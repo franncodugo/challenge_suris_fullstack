@@ -2,7 +2,6 @@
 
 public class ReservationDto
 {
-    public int Id { get; set; }
     public int ServiceId { get; set; }
     public int ClientId { get; set; }
     public DateTime Date { get; set; }

@@ -1,0 +1,6 @@
+@Reservation_Suris_HostAddress = http://localhost:5095
+
+GET {{Reservation_Suris_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
